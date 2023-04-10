@@ -1,17 +1,17 @@
 import Card from '../UI/Card'
 import Button from '../UI/Button'
 import classes from './AddUser.module.css'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Error from '../UI/Error'
 
 const AddUser = (props) => {
-
+    const collageName=useRef()
     const [enteredUsername, setEnteredUsername] = useState('')
     const [enteredUserage, setEnteredUserage] = useState('')
     const [error, setError] = useState()
     const adduser = (event) => {
         event.preventDefault()
-         
+         const cName=collageName.current.value
         if(enteredUsername.trim().length===0 || enteredUserage.trim().length===0){
             setError({
                 title:'Invalid input',
@@ -26,9 +26,10 @@ const AddUser = (props) => {
             })
             return;
         }
-        props.onAdduser(enteredUsername,enteredUserage)
+        props.onAdduser(enteredUsername,enteredUserage,cName)
         setEnteredUsername('')
         setEnteredUserage('')
+        collageName.current.value='';
     }
     const setusername =(event)=>{
         setEnteredUsername(event.target.value)
@@ -49,6 +50,8 @@ const AddUser = (props) => {
                 <input id="name" type="text" value={enteredUsername} onChange={setusername} />
                 <label htmlFor="userage"> Age(Years)</label>
                 <input id="age" type="number" value={enteredUserage} onChange={setuserage} />
+                <label htmlFor="college"> Collage</label>
+                <input id="collage" type="text" ref={collageName}  />
                 <Button type="submit">Add User</Button>
             </form>
         </Card>
